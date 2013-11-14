@@ -52,13 +52,13 @@ Circle.prototype.update = function() {
   else if (this.position.y - this.size < 0)
     this.down = 1;
   if (this.right)
-    this.position.x = this.position.x + this.direction.x + this.age * 0.05;
+    this.position.x = this.position.x + this.direction.x + this.age * 0.005;
   else
-    this.position.x = this.position.x - this.direction.x - this.age * 0.05;
+    this.position.x = this.position.x - this.direction.x - this.age * 0.005;
   if (this.down) {
-    this.position.y = this.position.y + this.direction.y + this.age * 0.05;
+    this.position.y = this.position.y + this.direction.y + this.age * 0.005;
   } else {
-    this.position.y = this.position.y - this.direction.y - this.age * 0.05;
+    this.position.y = this.position.y - this.direction.y - this.age * 0.005;
   }
   this.age++;
 }
