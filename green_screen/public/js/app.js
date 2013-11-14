@@ -10,6 +10,12 @@ var toggles = {
   circles     : false
 };
 
+greenScreenData = {
+  r: 0.85,
+  g: 50,
+  b: 0.85
+};
+
 
 window.onload = function() {
   canvas = document.getElementById('animation');
@@ -26,6 +32,22 @@ window.onload = function() {
     console.log(toggle);
     toggles[toggle] = !toggles[toggle];
     $this.toggleClass('active');
+  });
+  $(canvas).on('click', function(event) {
+    var x = event.pageX;
+    var y = event.pageY;
+
+    var pixelData = context.getImageData(x, y, 1, 1);
+    var r = pixelData.data[0];
+    var g = pixelData.data[1];
+    var b = pixelData.data[2];
+
+    greenScreenData = {
+      r: r/g + .20,
+      g: g - 20,
+      b: b/g + .20
+    };
+
   });
 }
 
@@ -48,7 +70,7 @@ function draw() {
       var b = data[i+2];
       // green screen
       if (toggles.greenScreen) {
-        if (g > 50 && b/g < 0.85 && r/g < 0.85) {
+        if (g > greenScreenData.g && b/g < greenScreenData.b && r/g < greenScreenData.r) {
           data[i+3] = 0;
         }
       }
