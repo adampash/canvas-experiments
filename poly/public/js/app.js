@@ -77,6 +77,10 @@ function getPixelArray(array, startIndex) {
 
 var bestDelta;
 
+// MOSHE: This is the code that requires the most churn.
+// I'm realizing that it's probably not even necessary to do this
+// per-pixel (see the i+=4 for loop) — pretty sure you should be able
+// to do this one value at a time and get the same outcome.
 function newPolyBetter() {
   var newImage = context.getImageData(0, 0, canvas.width, canvas.height);
   var newImageData = newImage.data;
@@ -91,17 +95,6 @@ function newPolyBetter() {
       }, 0);
       newDelta += newDiff;
 
-      // var newPixelType = calculatePixel(newPixel);
-      // var bestPixelType = calculatePixel(getPixelArray(oldImageData, i));
-      // debugger;
-      // var actualPixelType = calculatePixel(getPixelArray(origData, i));
-
-      // var newPercentages = actualPixelType.reduce(function(prev, current, index) {
-      //   return prev + Math.abs(current - newPixelType[index]);
-      // }, 0);
-      // var bestPercentages = actualPixelType.reduce(function(prev, current, index) {
-      //   return prev + Math.abs(current - bestPixelType[index]);
-      // }, 0);
     }
     if (!bestDelta) {
       bestDelta = newDelta;
