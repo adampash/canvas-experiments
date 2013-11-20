@@ -67,13 +67,16 @@ function setOrig(context) {
   }
 }
 
+var mediastream;
 function gotVideo(media) {
+  mediastream = media;
   var video = document.getElementById('video');
-  attachMediaStream(video, media);
+  attachMediaStream(video, mediastream);
   setTimeout(function() {
     var origContext = original.getContext('2d');
     origContext.drawImage(video, -200, -50)
     setOrig(origContext);
+    mediastream.stop();
   }, 500);
 }
 
