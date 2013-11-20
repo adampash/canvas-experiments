@@ -86,22 +86,14 @@ function newPolyBetter() {
   var newImageData = newImage.data;
   if (origPercents && origData) {
     var newDelta = 0;
-    for (var i = 0; i < newImageData.length; i += 4) {
-      var newPixel = getPixelArray(newImageData, i);
-      var origPixel = getPixelArray(origData, i);
-
-      var newDiff = newPixel.reduce(function(prev, current, index) {
-        return prev + Math.abs(current - origPixel[index]);
-      }, 0);
-      newDelta += newDiff;
-
+    for (var i = 0; i < newImageData.length; i++) {
+      newDelta += Math.abs(newImageData[i] - origData[i]);
     }
     if (!bestDelta) {
       bestDelta = newDelta;
     }
     if (newDelta <= bestDelta) {
       bestDelta = newDelta;
-      debugger;
       return true;
     } else {
       return false;
