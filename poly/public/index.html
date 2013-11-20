@@ -6,6 +6,11 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: Helvetica;
+}
+
+a {
+  text-decoration: none;
 }
 #animation {
   background: white;
@@ -13,17 +18,54 @@ body {
 canvas {
   width: 300px;
   height: 374px;
-  margin: 50px;
+  margin: 30px;
   border: 1px solid gray;
+}
+.stats {
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(244, 244, 244, 0.3);
+}
+
+h3 {
+  font-size: 30px;
+  display: inline-block;
+  margin: 10px 30px;
+}
+
+h3#improvements {
+  color: rgba(19, 185, 23, 1);
+}
+
+.canvases {
+  margin-top: 30px;
+}
+
+#start a {
+  color: rgba(19, 185, 23, 1);
+}
 </style>
 <script src="js/jquery.js"></script>
 <script src="js/app.js"></script>
 </head>
 
 <body>
+<div class="stats">
+  <h3 id="iterations"><span id="num_iter">0</span> iterations</h3>
+  <h3 id="improvements"><span id="num_imp">0</span> improvements</h3>
+  <h3 id="time"></h3>
+
+  <input type="checkbox" id="evo">Evo
+  <h3 id="start"><a href="#">Start</a></h3>
+</div>
+<div class="canvases">
   <canvas id="original"></canvas>
   <canvas id="best"></canvas>
   <canvas id="current"></canvas>
+</div>
 </body>
 
 </html>

@@ -1,5 +1,11 @@
 var canvas, context, circle, original, best, bestContext;
-var counter = 0;
+
+var iterations = 0;
+var improvements = 0;
+var num_iter, num_imp;
+
+var evolve = false;
+var goodPoly;
 
 var origData, bestData, imageData;
 
@@ -22,6 +28,21 @@ window.onload = function() {
   best.width = 300;
   bestContext = best.getContext('2d');
   bestData = bestContext.getImageData(0, 0, original.width, original.height);
+
+  num_iter = document.getElementById('num_iter');
+  num_imp = document.getElementById('num_imp');
+  time = document.getElementById('time');
+
+  var start = document.getElementById('start');
+  start.onclick = function() {
+    main();
+    return false;
+  }
+
+  var evo = document.getElementById('evo');
+  evo.onclick = function() {
+    evolve = !evolve;
+  }
 
   var image = new Image();
   image.src = 'Mona_Lisa.jpg';
@@ -57,17 +78,26 @@ function clearWindow() {
   canvas.width = canvas.width;
 }
 
-drawPoly = function drawNoise() {
+drawPoly = function drawPoly() {
   var numOfPixels = canvas.height * canvas.width;
   var imageData = context.createImageData(canvas.width, canvas.height);
-  var newPixel = [];
-  var poly = new RandomPoly(6);
   context.putImageData(bestData, 0, 0);
+  var poly;
+  if (goodPoly && evolve) {
+    goodPoly.mutate();
+    poly = goodPoly;
+  } else {
+    poly = new RandomPoly(6);
+  }
   poly.draw();
+  iterations++;
   if (newPolyBetter()) {
     var newBest = context.getImageData(0, 0, original.width, original.height);
     bestContext.putImageData(newBest, 0, 0);
     bestData = newBest;
+    goodPoly = poly;
+  } else {
+    goodPoly = undefined;
   }
 }
 
@@ -94,6 +124,7 @@ function newPolyBetter() {
     }
     if (newDelta <= bestDelta) {
       bestDelta = newDelta;
+      improvements++;
       return true;
     } else {
       return false;
@@ -117,6 +148,10 @@ RandomPoly.prototype.draw = function() {
   }
   context.closePath();
   context.fill();
+}
+
+RandomPoly.prototype.mutate = function() {
+  console.log('mutuate');
 }
 
 drawNoise = function drawNoise() {
@@ -191,10 +226,16 @@ function calculatePixel(pixel) {
   return [redPercent, greenPercent, bluePercent];
 }
 
+function updateStats() {
+  num_iter.innerHTML = iterations;
+  num_imp.innerHTML = improvements;
+}
+
 
 function draw() {
   clearWindow();
   drawPoly();
+  updateStats();
 }
 
 function update() {
@@ -205,5 +246,3 @@ function main() {
   update();
   window.requestAnimationFrame(main)
 }
-
-window.requestAnimationFrame(main)
