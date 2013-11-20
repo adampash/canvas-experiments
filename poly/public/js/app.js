@@ -39,10 +39,15 @@ window.onload = function() {
     return false;
   }
 
-  var evo = document.getElementById('evo');
-  evo.onclick = function() {
-    evolve = !evolve;
+  var gum = document.getElementById('gum');
+  gum.onclick = function() {
+    getUserMedia({video: true}, gotVideo);
   }
+
+  // var evo = document.getElementById('evo');
+  // evo.onclick = function() {
+  //   evolve = !evolve;
+  // }
 
   var image = new Image();
   image.src = 'Mona_Lisa.jpg';
@@ -51,11 +56,25 @@ window.onload = function() {
   image.onload = function() {
     var origContext = original.getContext('2d');
     origContext.drawImage(image, 0, 0);
-    origData = origContext.getImageData(0, 0, original.width, original.height).data;
-    for (i = 0; i < origData.length; i++) {
-      origPercents.push(origData[i] / 255.0);
-    }
+    setOrig(origContext);
   }
+}
+
+function setOrig(context) {
+  origData = context.getImageData(0, 0, original.width, original.height).data;
+  for (i = 0; i < origData.length; i++) {
+    origPercents.push(origData[i] / 255.0);
+  }
+}
+
+function gotVideo(media) {
+  var video = document.getElementById('video');
+  attachMediaStream(video, media);
+  setTimeout(function() {
+    var origContext = original.getContext('2d');
+    origContext.drawImage(video, -200, -50)
+    setOrig(origContext);
+  }, 500);
 }
 
 randomColor = function() {
