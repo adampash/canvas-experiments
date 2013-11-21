@@ -7,6 +7,7 @@ var toggles = {
   inverse     : false,
   noBG        : false,
   greenScreen : false,
+  bnw         : false,
   circles     : false
 };
 
@@ -73,6 +74,15 @@ function draw() {
         if (g > greenScreenData.g && b/g < greenScreenData.b && r/g < greenScreenData.r) {
           data[i+3] = 0;
         }
+      }
+
+      // black and white
+      if (toggles.bnw) {
+        // 255 * 3 = 765
+        var brightness = (r + g + b)/3;
+        data[i] = brightness;
+        data[i+1] = brightness;
+        data[i+2] = brightness;
       }
       // big blur
       if (toggles.bigBlur) {
