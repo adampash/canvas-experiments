@@ -51,6 +51,7 @@ window.onload = function() {
 
   var image = new Image();
   image.src = 'Mona_Lisa.jpg';
+  // image.src = 'chrome.jpg';
   image.height = 374;
   image.width = 300;
   image.onload = function() {
@@ -112,12 +113,16 @@ drawPoly = function drawPoly() {
     poly = new RandomPoly(6);
   }
   poly.draw();
+  checkImprovements(poly);
+}
+
+function checkImprovements(figure) {
   iterations++;
   if (newPolyBetter()) {
     var newBest = context.getImageData(0, 0, original.width, original.height);
     bestContext.putImageData(newBest, 0, 0);
     bestData = newBest;
-    goodPoly = poly;
+    goodPoly = figure;
   } else {
     goodPoly = undefined;
   }
@@ -152,6 +157,24 @@ function newPolyBetter() {
       return false;
     }
   }
+}
+
+function RandomCircle(n) {
+  this.coords = [];
+  for (var i = 0; i < n; i++) {
+    this.coords.push([randNumFromZeroTo(canvas.width), randNumFromZeroTo(canvas.height)]);
+  }
+}
+
+RandomCircle.prototype.draw = function() {
+  context.fillStyle = randomColor();
+  context.beginPath();
+  context.moveTo(this.coords[0][0], this.coords[0][1]);
+  for (var i = 1; i < this.coords.length; i++) {
+    context.lineTo(this.coords[i][0], this.coords[i][1]);
+  }
+  context.closePath();
+  context.fill();
 }
 
 function RandomPoly(n) {
